@@ -8,6 +8,7 @@ import java.util.Comparator;
  * @author Boaz
  *
  */
+
 public class Monom implements function{
 	public static final Monom ZERO = new Monom(0,0);
 	public static final Monom MINUS1 = new Monom(-1,0);
