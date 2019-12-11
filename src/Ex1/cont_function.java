@@ -1,4 +1,4 @@
-package myMath;
+package Ex1;
 
 /**
  * The interface represents a continuance function 
@@ -30,4 +30,6 @@ public interface cont_function extends function{
 	 */
 
 	public double root(double x0, double x1, double eps);
+
+	
 }

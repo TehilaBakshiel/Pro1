@@ -1,12 +1,11 @@
-package myMath;
+package Ex1;
 
 import java.awt.Point;
-import myMath.Monom;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.function.Predicate;
 
-import myMath.Monom;
+import Ex1.Monom;
 /**
  * This class represents a Polynom with add, multiply functionality, it also should support the following:
  * 1. Riemann's Integral: https://en.wikipedia.org/wiki/Riemann_integral
@@ -42,7 +41,7 @@ public class Polynom implements Polynom_able{
 	 *  {"(2x^2-4)*(-1.2x-7.1)", "(3-3.4x+1)*((3.1x-1.2)-(3X^2-3.1))"};
 	 * @param s: is a string represents a Polynom
 	 */
-	public Polynom(String s) {
+	/*public Polynom(String s) {
 		if(s.contains("(") || s.contains(")")) {
 			throw new RuntimeException("Error. Polynom cannot contains the char ( or ) ");
 		}
@@ -82,8 +81,60 @@ public class Polynom implements Polynom_able{
 			} //sort so the polynom is printed correctly.
 			polynom= sortAndMerge(polynom);
 		}
+	}*/
+
+	public Polynom(String s) {
+		String s1="";
+		for(int i=0;i<s.length();i++){
+			if(s.charAt(i)!=' '){
+				s1=s1+s.charAt(i);
+			}
+		}
+		
+		
+		if(s1.contains("(") || s1.contains(")")) {
+			throw new RuntimeException("Error. Polynom cannot contains the char ( or ) ");
+		}
+		else {
+			polynom = new ArrayList<Monom>();
+			if(s1.startsWith("+")) {
+				s1 = s1.replaceFirst("\\+", "");
+			}
+			String[] p1 = s1.split("[+]");
+			boolean flag = false;
+			for(int i = 0; i < p1.length; i++){
+				String[] p2 = p1[i].split("-");
+				for(int j = 0; j < p2.length; j++){
+					if(p2[j].equals("")) {
+						flag = true;
+					}
+					else {
+						if(p2.length == 1){ //if the array is sized 1 than the Monom is surely positive.
+							polynom.add(new Monom(p2[j]));
+							break;
+						}
+						if(flag){ //case 1: first slot is empty -> 2nd slot is a negative monom
+							polynom.add(new Monom("-" + p2[j]));
+
+							flag = false;
+						}	
+						else if(j == 0 && !flag){ //case 2: first slot is not empty -> 1st slot is a positive monom
+							polynom.add(new Monom(p2[j]));
+
+						}
+						else { //after spliting by "-" the rest are negative.
+							polynom.add(new Monom("-" + p2[j]));	
+						}
+					}	
+				}
+
+			} //sort so the polynom is printed correctly.
+			polynom= sortAndMerge(polynom);
+		}
 	}
 
+	
+	
 	/**
 	 * sort the polynom
 	 * @param list: is a Arraylist of Monoms represents a Polynom
@@ -190,7 +241,7 @@ public class Polynom implements Polynom_able{
 		}
 	}
 
-	@Override
+	
 	public boolean equals(Polynom_able p1) {
 		boolean answer = false;
 		Iterator<Monom> thisIter = this.iteretor();
@@ -323,10 +374,15 @@ public class Polynom implements Polynom_able{
 		while(it.hasNext()) {
 			Monom m1 = it.next();
 			if(m1.get_coefficient()>0) {
-				ans= ans+" + "+m1.toString();
+				if(m1.toString().charAt(0)=='-'){
+					ans= ans+m1.toString();
+				}
+				else{
+				ans= ans+"+"+m1.toString();
+				}
 			}
 			else {
-				ans= ans+" "+ m1.toString();
+				ans= ans+ m1.toString();
 			}
 		}
 		if (ans!="") {
@@ -335,5 +391,10 @@ public class Polynom implements Polynom_able{
 		else {
 			return 0+"";
 		}
+	}
+	@Override
+	public function initFromString(String s) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
